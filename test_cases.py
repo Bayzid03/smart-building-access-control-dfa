@@ -146,3 +146,36 @@ def run_comprehensive_tests():
     print(f"Success Rate: {(passed/len(test_cases)*100):.1f}%")
     
     return passed, failed
+
+def generate_test_table():
+    """Generate test results table for documentation"""
+    dfa = AccessControlDFA()
+    
+    test_cases = [
+        ("Valid LOBBY sequence", ['C', 'P', 'F', 'V'], 'LOBBY', 'ACCEPTED'),
+        ("Valid SERVER_ROOM sequence", ['C', 'P', 'R', 'A'], 'SERVER_ROOM', 'ACCEPTED'), 
+        ("Wrong first symbol", ['P', 'P', 'F', 'V'], 'LOBBY', 'REJECTED'),
+        ("Out of order sequence", ['C', 'F', 'P', 'V'], 'LOBBY', 'REJECTED'),
+        ("Invalid symbol in sequence", ['C', 'P', 'X', 'V'], 'LOBBY', 'REJECTED')
+    ]
+    
+    print("\nTEST RESULTS TABLE FOR DOCUMENTATION")
+    print("="*90)
+    print(f"{'Test Case':<35} {'Expected':<12} {'Actual':<12} {'Pass/Fail':<12}")
+    print("-"*90)
+    
+    for description, sequence, zone, expected in test_cases:
+        results = dfa.process_sequence(sequence, zone)
+        actual = 'ACCEPTED' if dfa.is_accepted() else 'REJECTED'
+        pass_fail = 'PASS' if actual == expected else 'FAIL'
+        
+        print(f"{description:<35} {expected:<12} {actual:<12} {pass_fail:<12}")
+    
+    print("-"*90)
+
+if __name__ == "__main__":
+    # Run comprehensive tests
+    run_comprehensive_tests()
+    
+    # Generate documentation table
+    generate_test_table()
