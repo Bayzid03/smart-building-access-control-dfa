@@ -25,48 +25,49 @@ class AccessControlDFA:
         Process input symbol and transition to next state
         Returns: (new_state, message)
         """
-        # Set target zone if provided
+        # Set target zone if provided at START
         if zone and self.current_state == 'START':
             if zone not in self.config.get_zones():
                 return self._reject("Invalid zone specified")
             self.target_zone = zone
         
-        # If no zone specified and we're at start, reject
+        # If no zone specified at start, reject immediately
         if not self.target_zone and self.current_state == 'START':
             return self._reject("No target zone specified")
+        
+        # If already accepted or rejected, ignore further inputs
+        if self.current_state in ['REJECTED', 'ACCEPTED']:
+            return self.current_state, "Process already completed. Reset required."
+        
+        # Validate input symbol against the 8-symbol alphabet
+        if input_symbol not in self.config.auth_symbols:
+            return self._reject(f"Invalid authentication symbol: {input_symbol}")
         
         # Get expected sequence for target zone
         expected_sequence = self.config.get_policy(self.target_zone)
         current_step = len(self.current_sequence)
         
-        # Check if we're already in rejected or accepted state
-        if self.current_state in ['REJECTED', 'ACCEPTED']:
-            return self.current_state, "Process already completed. Reset required."
-        
-        # Validate input symbol
-        if input_symbol not in self.config.auth_symbols:
-            return self._reject(f"Invalid authentication symbol: {input_symbol}")
-        
-        # Check if input matches expected symbol at current step
+        # Sequence too long? Reject.
         if current_step >= len(expected_sequence):
             return self._reject("Authentication sequence too long")
         
+        # Check if current input matches expected symbol at this step
         expected_symbol = expected_sequence[current_step]
         if input_symbol != expected_symbol:
             expected_name = self.config.get_auth_name(expected_symbol)
             actual_name = self.config.get_auth_name(input_symbol)
             return self._reject(f"Wrong authentication method. Expected: {expected_name}, Got: {actual_name}")
         
-        # Valid transition - add to sequence and update state
+        # Valid transition: record input and advance
         self.current_sequence.append(input_symbol)
         new_step = len(self.current_sequence)
         
+        # If complete sequence → accept
         if new_step == len(expected_sequence):
-            # Complete sequence - grant access
             self.current_state = 'ACCEPTED'
             return 'ACCEPTED', f"Access GRANTED to {self.target_zone}"
         else:
-            # Move to next step
+            # Move to next step state
             self.current_state = f'STEP_{new_step}'
             next_expected = self.config.get_auth_name(expected_sequence[new_step])
             return self.current_state, f"Step {new_step} completed. Next: {next_expected}"
@@ -110,7 +111,7 @@ class AccessControlDFA:
                 'message': message
             })
             
-            # Stop if rejected or accepted
+            # Stop processing if reached final state
             if state in ['REJECTED', 'ACCEPTED']:
                 break
         
