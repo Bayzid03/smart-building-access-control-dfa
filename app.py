@@ -73,11 +73,20 @@ def process_authentication(zone, sequence_input):
 def run_test_cases():
     """Run predefined test cases and return results"""
     test_cases = [
-        ("Valid LOBBY", "LOBBY", "C P F V", "GRANTED"),
-        ("Valid SERVER ROOM", "SERVER ROOM", "C P R A", "GRANTED"),
-        ("Wrong first step", "LOBBY", "P P F V", "DENIED"),
-        ("Out of order", "LOBBY", "C F P V", "DENIED"),
-        ("Invalid symbol", "LOBBY", "C P X V", "DENIED"),
+        ("Valid MAIN_ENTRANCE", "MAIN_ENTRANCE", "C P F V", "GRANTED"),
+        ("Valid IT_INFRASTRUCTURE", "IT_INFRASTRUCTURE", "P R A F", "GRANTED"),
+        ("Valid TECH_LAB", "TECH_LAB", "F C P X", "GRANTED"),
+        ("Valid BOARDROOM", "BOARDROOM", "R K V A", "GRANTED"),
+        ("Valid INNOVATION_HUB", "INNOVATION_HUB", "V A C K", "GRANTED"),
+        ("Valid CONTROL_CENTER", "CONTROL_CENTER", "A X R P", "GRANTED"),
+        ("Valid CLOUD_FACILITY", "CLOUD_FACILITY", "K F X R", "GRANTED"),
+        ("Valid CONFERENCE_HALL", "CONFERENCE_HALL", "X V P F", "GRANTED"),
+        ("Wrong first step", "MAIN_ENTRANCE", "P P F V", "DENIED"),
+        ("Out of order", "MAIN_ENTRANCE", "C F P V", "DENIED"),
+        ("Invalid symbol", "MAIN_ENTRANCE", "C P X V", "DENIED"),
+        ("Extra input after valid", "MAIN_ENTRANCE", "C P F V A", "DENIED"),
+        ("Incomplete sequence", "MAIN_ENTRANCE", "C P", "DENIED"),
+        
     ]
     
     results_text = "🧪 **TEST CASES RESULTS**\n\n"
@@ -209,12 +218,12 @@ def create_demo():
                    - **F** = Fingerprint
                    - **R** = Retina Scan
                    - **V** = Voice Recognition
-                   - **Fc** = Face Recognition
+                   - **X** = Face Recognition
                    - **A** = Admin Override
                    - **K** = Keypad Entry
                 
                 ### ✅ **Example Usage**
-                - **Zone:** LOBBY
+                - **Zone:** MAIN_ENTRANCE
                 - **Sequence:** C P F V
                 - **Result:** Access Granted ✅
                 
