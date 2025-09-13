@@ -95,16 +95,23 @@ def run_test_cases():
     dfa = AccessControlDFA()
     config = ZoneConfig()
     
-    # Test cases: (description, sequence, zone, expected_result)
+    # ✅ UPDATED TEST CASES TO MATCH YOUR CORRECTED ZONE POLICIES
     test_cases = [
-        ("Correct LOBBY sequence", ['C', 'P', 'F', 'V'], 'LOBBY', 'ACCEPTED'),
-        ("Correct SERVER_ROOM sequence", ['C', 'P', 'R', 'A'], 'SERVER_ROOM', 'ACCEPTED'),
-        ("Wrong first symbol", ['P', 'P', 'F', 'V'], 'LOBBY', 'REJECTED'),
-        ("Partially correct then wrong", ['C', 'P', 'R', 'V'], 'LOBBY', 'REJECTED'),
-        ("Too many symbols", ['C', 'P', 'F', 'V', 'A'], 'LOBBY', 'REJECTED'),
-        ("Invalid symbol", ['C', 'P', 'X', 'V'], 'LOBBY', 'REJECTED'),
-        ("Too short sequence", ['C', 'P', 'F'], 'LOBBY', 'REJECTED'),
-        ("Wrong zone sequence", ['C', 'P', 'R', 'A'], 'LOBBY', 'REJECTED'),
+        ("Correct MAIN_ENTRANCE sequence", ['C', 'P', 'F', 'V'], 'MAIN_ENTRANCE', 'ACCEPTED'),
+        ("Correct IT_INFRASTRUCTURE sequence", ['P', 'R', 'A', 'F'], 'IT_INFRASTRUCTURE', 'ACCEPTED'),
+        ("Correct TECH_LAB sequence", ['F', 'C', 'P', 'X'], 'TECH_LAB', 'ACCEPTED'),
+        ("Correct BOARDROOM sequence", ['R', 'K', 'V', 'A'], 'BOARDROOM', 'ACCEPTED'),
+        ("Correct INNOVATION_HUB sequence", ['V', 'A', 'C', 'K'], 'INNOVATION_HUB', 'ACCEPTED'),
+        ("Correct CONTROL_CENTER sequence", ['A', 'X', 'R', 'P'], 'CONTROL_CENTER', 'ACCEPTED'),
+        ("Correct CLOUD_FACILITY sequence", ['K', 'F', 'X', 'R'], 'CLOUD_FACILITY', 'ACCEPTED'),
+        ("Correct CONFERENCE_HALL sequence", ['X', 'V', 'P', 'F'], 'CONFERENCE_HALL', 'ACCEPTED'),
+        
+        ("Wrong first symbol", ['P', 'P', 'F', 'V'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Partially correct then wrong", ['C', 'P', 'R', 'V'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Too many symbols", ['C', 'P', 'F', 'V', 'A'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Invalid symbol", ['C', 'P', 'Z', 'V'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Too short sequence", ['C', 'P', 'F'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Wrong zone sequence", ['C', 'P', 'F', 'V'], 'IT_INFRASTRUCTURE', 'REJECTED'),
     ]
     
     print("\nRunning Test Cases...")
