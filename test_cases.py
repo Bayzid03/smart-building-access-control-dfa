@@ -12,90 +12,90 @@ def run_comprehensive_tests():
     test_cases = [
         # Valid sequences for each zone
         {
-            'name': 'LOBBY - Valid Sequence',
+            'name': 'MAIN_ENTRANCE - Valid Sequence',
             'sequence': ['C', 'P', 'F', 'V'],
-            'zone': 'LOBBY',
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'ACCEPTED',
-            'description': 'Correct sequence for LOBBY access'
+            'description': 'Correct sequence for MAIN_ENTRANCE access'
         },
         {
-            'name': 'SERVER_ROOM - Valid Sequence', 
-            'sequence': ['C', 'P', 'R', 'A'],
-            'zone': 'SERVER_ROOM',
+            'name': 'IT_INFRASTRUCTURE - Valid Sequence', 
+            'sequence': ['P', 'R', 'A', 'F'],
+            'zone': 'IT_INFRASTRUCTURE',
             'expected': 'ACCEPTED',
-            'description': 'Correct sequence for SERVER_ROOM access'
+            'description': 'Correct sequence for IT_INFRASTRUCTURE access'
         },
         {
-            'name': 'LABORATORY - Valid Sequence',
-            'sequence': ['C', 'P', 'F', 'Fc'],
-            'zone': 'LABORATORY', 
+            'name': 'TECH_LAB - Valid Sequence',
+            'sequence': ['F', 'C', 'P', 'X'],
+            'zone': 'TECH_LAB', 
             'expected': 'ACCEPTED',
-            'description': 'Correct sequence for LABORATORY access'
+            'description': 'Correct sequence for TECH_LAB access'
         },
         
         # Invalid sequences
         {
             'name': 'Wrong First Symbol',
-            'sequence': ['P', 'P', 'F', 'V'],
-            'zone': 'LOBBY',
+            'sequence': ['P', 'P', 'R', 'A'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Starting with wrong authentication method'
         },
         {
             'name': 'Out of Order Sequence',
-            'sequence': ['C', 'F', 'P', 'V'],
-            'zone': 'LOBBY',
+            'sequence': ['P', 'R', 'A', 'F'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Correct symbols but wrong order'
         },
         {
             'name': 'Partially Correct Then Wrong',
-            'sequence': ['C', 'P', 'R', 'V'],
-            'zone': 'LOBBY',
+            'sequence': ['F', 'C', 'P', 'R', 'A'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'First two steps correct, then wrong symbol'
         },
         {
             'name': 'Extra Input After Valid',
-            'sequence': ['C', 'P', 'F', 'V', 'A'],
-            'zone': 'LOBBY',
+            'sequence': ['F', 'C', 'P', 'R', 'A', 'F'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Valid sequence with extra symbol'
         },
         {
             'name': 'Invalid Symbol',
-            'sequence': ['C', 'P', 'X', 'V'],
-            'zone': 'LOBBY',
+            'sequence': ['F', 'C', 'P', 'X'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Contains invalid authentication symbol'
         },
         {
             'name': 'Incomplete Sequence',
-            'sequence': ['C', 'P', 'F'],
-            'zone': 'LOBBY',
+            'sequence': ['F', 'C', 'P'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Sequence too short - missing final step'
         },
         {
             'name': 'Wrong Zone Policy',
-            'sequence': ['C', 'P', 'R', 'A'],
-            'zone': 'LOBBY',
+            'sequence': ['P', 'R', 'A', 'F'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
-            'description': 'Using SERVER_ROOM sequence for LOBBY'
+            'description': 'Using IT_INFRASTRUCTURE sequence for MAIN_ENTRANCE'
         },
         
         # Edge cases
         {
             'name': 'Empty Sequence',
             'sequence': [],
-            'zone': 'LOBBY',
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'No authentication attempts'
         },
         {
             'name': 'Single Symbol',
-            'sequence': ['C'],
-            'zone': 'LABORATORY',
+            'sequence': ['F'],
+            'zone': 'MAIN_ENTRANCE',
             'expected': 'REJECTED',
             'description': 'Only first authentication step'
         }
@@ -152,11 +152,11 @@ def generate_test_table():
     dfa = AccessControlDFA()
     
     test_cases = [
-        ("Valid LOBBY sequence", ['C', 'P', 'F', 'V'], 'LOBBY', 'ACCEPTED'),
-        ("Valid SERVER_ROOM sequence", ['C', 'P', 'R', 'A'], 'SERVER_ROOM', 'ACCEPTED'), 
-        ("Wrong first symbol", ['P', 'P', 'F', 'V'], 'LOBBY', 'REJECTED'),
-        ("Out of order sequence", ['C', 'F', 'P', 'V'], 'LOBBY', 'REJECTED'),
-        ("Invalid symbol in sequence", ['C', 'P', 'X', 'V'], 'LOBBY', 'REJECTED')
+        ("Valid MAIN_ENTRANCE sequence", ['C', 'P', 'F', 'V'], 'MAIN_ENTRANCE', 'ACCEPTED'),
+        ("Valid IT_INFRASTRUCTURE sequence", ['P', 'R', 'A', 'F'], 'IT_INFRASTRUCTURE', 'ACCEPTED'), 
+        ("Wrong first symbol", ['P', 'P', 'R', 'A'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Out of order sequence", ['P', 'R', 'A', 'F'], 'MAIN_ENTRANCE', 'REJECTED'),
+        ("Invalid symbol in sequence", ['C', 'P', 'X', 'V'], 'MAIN_ENTRANCE', 'REJECTED')
     ]
     
     print("\nTEST RESULTS TABLE FOR DOCUMENTATION")
