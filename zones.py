@@ -9,21 +9,21 @@ class ZoneConfig:
             'F': 'Fingerprint',
             'R': 'Retina Scan',
             'V': 'Voice Recognition',
-            'Fc': 'Face Recognition',
+            'X': 'Face Recognition',
             'A': 'Admin Override',
             'K': 'Keypad Entry'
         }
         
-        # Zone access policies (minimum 4 steps each)
+        # Zone access policies - Each starts with UNIQUE symbol
         self.zone_policies = {
-            'LOBBY': ['C', 'P', 'F', 'V'],           # Card → PIN → Fingerprint → Voice
-            'SERVER_ROOM': ['C', 'P', 'R', 'A'],     # Card → PIN → Retina → Admin
-            'LABORATORY': ['C', 'P', 'F', 'Fc'],     # Card → PIN → Fingerprint → Face
-            'EXEC_LOUNGE': ['C', 'K', 'R', 'V'],     # Card → Keypad → Retina → Voice
-            'RESEARCH_WING': ['C', 'P', 'R', 'Fc'],  # Card → PIN → Retina → Face
-            'SECURITY_OFFICE': ['A', 'P', 'F', 'R'], # Admin → PIN → Fingerprint → Retina
-            'DATA_CENTER': ['C', 'A', 'R', 'F'],     # Card → Admin → Retina → Fingerprint
-            'MEETING_ROOM': ['C', 'P', 'V', 'Fc']    # Card → PIN → Voice → Face
+            'MAIN_ENTRANCE': ['C', 'P', 'F', 'V'],      # Card → PIN → Fingerprint → Voice
+            'IT_INFRASTRUCTURE': ['P', 'R', 'A', 'F'],  # PIN → Retina → Admin → Fingerprint
+            'TECH_LAB': ['F', 'C', 'P', 'X'],           # Fingerprint → Card → PIN → Face
+            'BOARDROOM': ['R', 'K', 'V', 'A'],          # Retina → Keypad → Voice → Admin
+            'INNOVATION_HUB': ['V', 'A', 'C', 'K'],     # Voice → Admin → Card → Keypad
+            'CONTROL_CENTER': ['A', 'X', 'R', 'P'],     # Admin → Face → Retina → PIN
+            'CLOUD_FACILITY': ['K', 'F', 'X', 'R'],     # Keypad → Fingerprint → Face → Retina
+            'CONFERENCE_HALL': ['X', 'V', 'P', 'F']     # Face → Voice → PIN → Fingerprint
         }
     
     def get_zones(self):
